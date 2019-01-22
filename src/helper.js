@@ -1,8 +1,18 @@
-var debounce = require('lodash.debounce');
+var debounce = require('lodash.debounce'),
+  isObject = require('lodash.isobject'),
+  trim = require('underscore.string/trim');
 
 var exports = {};
 
 exports.debounce = debounce;
+exports.isObject = isObject;
+
+exports.kebabCase = function(str) {
+  return trim(str)
+    .replace(/([A-Z])/g, '-$1')
+    .replace(/[-_\s]+/g, '-')
+    .toLowerCase();
+};
 
 
 //---------------------------------------------------

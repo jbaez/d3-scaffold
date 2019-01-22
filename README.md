@@ -28,10 +28,29 @@ The core of d3-scaffold are base classes for creating a chart. Currently there a
 
 Most of the time you will not need to access `AbstractChart` directly, but you will use one of its children: `SvgChart`, `CanvasChart` or `HybridChart`.
 
+### SvgChart
+
+This class creates `<svg>` boilerplate inside the container.
+
 ### CanvasChart
 
 This class creates `<canvas>` inside the container. It also handles different screen resolution for you (retina display vs. standard display).
 
+### TODO: Add `HybridChart` and `DivPlate`
+
+### Build your own chart with `plates`
+
+If `SvgChart`, `CanvasChart` or `HybridChart` does not fit your need yet, you can create your own.
+
+Under the hood, d3-scaffold use its "plating" system to wrap different type of components (`<svg>`, `<canvas>`, etc.). The current implementation includes three types of plates: `SvgPlate`, `CanvasPlate` and `DivPlate`.
+
+Think of `AbstractChart` as a container. **Any resizing done to the chart will be applied to the plates in it by d3-scaffold.** This abstraction helps you think of a chart as one piece and not to worry about how to keep track of each children size. Then you can just focus on what to drawn on svg or canvas based on the current dimension of the chart.
+
+* An `SvgChart` is an `AbstractChart` that has an `SvgPlate` in it.
+* A `CanvasChart` is an `AbstractChart` that has a `CanvasPlate` in it.
+* A `HybridChart`, as you may guess, is an `AbstractChart` that has two plates (`CanvasPlate` and `SvgPlate`) in it.
+
+Now if you want to create a chart with multiple canvases and svg, just create a new subclass.
 
 ```javascript
 var d3Scaffold = require('d3-scaffold'),
@@ -50,12 +69,14 @@ var CustomChart = function(selector, options) {
   // via this.plates.canvas2.getSelection()
 
   this.updateDimensionNow();
+
+  this.draw = function() {
+    // Implement here the logic for drawing the chart
+  }
 };
 
 CustomChart.prototype = Object.create(AbstractChart.prototype);
 CustomChart.prototype.constructor = CustomChart;
-
-### TODO: Add `SvgChart` and `HybridChart`
 
 ```
 
