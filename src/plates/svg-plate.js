@@ -25,7 +25,7 @@ var SvgPlate = function(options) {
 
     self.rootG.attr(
       'transform',
-      'translate(' + margin.left + x +',' + margin.top + y+ ')'
+      'translate(' + (margin.left + x) + ',' + (margin.top + y) + ')'
     );
 
     return self;
