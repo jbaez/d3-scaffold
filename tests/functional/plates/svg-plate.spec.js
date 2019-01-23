@@ -42,7 +42,7 @@ describe('SvgPlate', function() {
       var svg = plate.getSelection();
       expect(+svg.attr('width')).to.equal(100);
       expect(+svg.attr('height')).to.equal(100);
-      expect(plate.rootG.attr('transform')).to.equal('translate(101,101)');
+      expect(plate.rootG.attr('transform')).to.equal('translate(11,11)');
     });
   });
 });

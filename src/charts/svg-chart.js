@@ -1,6 +1,12 @@
 var AbstractChart = require('./abstact-chart'),
   SvgPlate = require('../plates/svg-plate');
 
+/**
+ * SVG Chart.
+ *
+ * @param {object|string} selector HTMLElement or selector to use for the Chart.
+ * @param {object=} options Options to use.
+ */
 var SvgChart = function(selector, options) {
   var self = this;
   AbstractChart.call(this, selector, options);

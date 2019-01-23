@@ -6,7 +6,7 @@ Written to use with D3 v4.
 
 ## What is d3-scaffold?
 
-The core of d3-scaffold are base classes for creating a chart. Currently there are `SvgChart`, `CanvasChart` and `HybridChart`. All are extended from `AbstractChart`.
+The core of d3-scaffold are base classes for creating a chart. Currently there are `SvgChart` and `CanvasChart`. All are extended from `AbstractChart`.
 
 ### AbstractChart
 
@@ -26,7 +26,7 @@ The core of d3-scaffold are base classes for creating a chart. Currently there a
   * `chart.on('options', listener)`
 * assumes little about how you implement a chart. You can extends the class and implements it the way you want.
 
-Most of the time you will not need to access `AbstractChart` directly, but you will use one of its children: `SvgChart`, `CanvasChart` or `HybridChart`.
+Most of the time you will not need to access `AbstractChart` directly, but you will use one of its children: `SvgChart` or `CanvasChart`.
 
 ### SvgChart
 
@@ -36,11 +36,9 @@ This class creates `<svg>` boilerplate inside the container.
 
 This class creates `<canvas>` inside the container. It also handles different screen resolution for you (retina display vs. standard display).
 
-### TODO: Add `HybridChart` and `DivPlate`
-
 ### Build your own chart with `plates`
 
-If `SvgChart`, `CanvasChart` or `HybridChart` does not fit your need yet, you can create your own.
+If `SvgChart` or `CanvasChart` does not fit your need yet, you can create your own.
 
 Under the hood, d3-scaffold use its "plating" system to wrap different type of components (`<svg>`, `<canvas>`, etc.). The current implementation includes three types of plates: `SvgPlate`, `CanvasPlate` and `DivPlate`.
 
@@ -48,7 +46,6 @@ Think of `AbstractChart` as a container. **Any resizing done to the chart will b
 
 * An `SvgChart` is an `AbstractChart` that has an `SvgPlate` in it.
 * A `CanvasChart` is an `AbstractChart` that has a `CanvasPlate` in it.
-* A `HybridChart`, as you may guess, is an `AbstractChart` that has two plates (`CanvasPlate` and `SvgPlate`) in it.
 
 Now if you want to create a chart with multiple canvases and svg, just create a new subclass.
 
