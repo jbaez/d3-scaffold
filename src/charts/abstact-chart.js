@@ -2,9 +2,66 @@ var Base = require('../base'),
   helper = require('../helper'),
   d3 = require('d3');
 
+/**
+ * Abstract Chart.
+ *
+ * @param {object|string} selector HTMLElement or selector to use for the Chart.
+ * @param {object=} options Options to use.
+ */
 var AbstractChart = function(selector, options) {
   var self = this;
   Base.call(this, options);
+
+  /**
+   * Called by updateDimension.
+   *
+   * @protected
+   * @override
+   * @return {this}
+   */
+  this._updateDimension = function() {
+    var width = self._state.width,
+      height = self._state.height,
+      plates = self._state.plates,
+      margin = self._state.options.margin;
+
+    self._state.innerWidth = width - margin.left - margin.right;
+    self._state.innerHeight = height - margin.top - margin.bottom;
+
+    self.chartRoot
+      .style('width', width + 'px')
+      .style('height', height + 'px');
+
+    for (var key in plates) {
+      plates[key].copyDimension(self)
+        .updateDimensionNow();
+    }
+
+    // Dispatch resize event
+    self.dispatcher.apply(
+      'resize',
+      self,
+      [width, height, self._state.innerWidth, self._state.innerHeight]
+    );
+
+    return self;
+  };
+
+  /**
+   * @protected
+   */
+  this._dispatchData = function() {
+    self.dispatcher.call('data', self, self._state.data);
+    return self;
+  };
+
+  /**
+   * @protected
+   */
+  this._dispatchOptions = function() {
+    self.dispatcher.call('options', self, self._state.options);
+    return self;
+  };
 
   this.addPlate = function(name, plate, doNotAppend) {
     if(self.plates[name]) {
@@ -46,7 +103,6 @@ var AbstractChart = function(selector, options) {
     self.dispatcher = d3.dispatch.apply(self, self._eventNames);
     return self;
   };
-
 
   this.getInnerWidth = function() {
     return self._state.innerWidth;
@@ -99,34 +155,6 @@ var AbstractChart = function(selector, options) {
     return self;
   };
 
-  this._updateDimension = function() {
-    var width = self._state.width,
-      height = self._state.height,
-      plates = self._state.plates,
-      margin = self._state.options.margin;
-
-    self._state.innerWidth = width - margin.left - margin.right;
-    self._state.innerHeight = height - margin.top - margin.bottom;
-
-    self.chartRoot
-      .style('width', width + 'px')
-      .style('height', height + 'px');
-
-    for (var key in plates) {
-      plates[key].copyDimension(self)
-        .updateDimensionNow();
-    }
-
-    // Dispatch resize event
-    self.dispatcher.apply(
-      'resize',
-      self,
-      [width, height, self._state.innerWidth, self._state.innerHeight]
-    );
-
-    return self;
-  };
-
   this.hasData = function() {
     var data = this._state.data;
     return data !== null && data !== undefined;
@@ -136,16 +164,6 @@ var AbstractChart = function(selector, options) {
     var innerWidth = self._state.innerWidth,
       innerHeight = self._state.innerHeight;
     return (innerWidth > 0 && innerHeight > 0);
-  };
-
-  this._dispatchData = function() {
-    self.dispatcher.call('data', self, self._state.data);
-    return self;
-  };
-
-  this._dispatchOptions = function() {
-    self.dispatcher.call('options', self, self._state.options);
-    return self;
   };
 
   this.on = function(name, listener) {

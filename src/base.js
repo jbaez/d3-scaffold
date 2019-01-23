@@ -1,7 +1,22 @@
 var helper = require('./helper');
 
+/**
+ * Base Class for Charts and Plates.
+ *
+ * @param {object=} options Options to use.
+ */
 var Base = function(options) {
   var self = this;
+
+  /**
+   * Called by updateDimension.
+   * Subclasses can override this function.
+   * @protected
+   * @return {this}
+   */
+  this._updateDimension = function() {
+    return self;
+  };
 
   this.copyDimension = function(another) {
     if (another) {
@@ -119,11 +134,6 @@ var Base = function(options) {
       self._state.options.pixelRatio = newValue;
       self._updateDimension();
     }
-    return self;
-  };
-
-  this._updateDimension = function() {
-    // Intentionally do nothing Subclasses can override this function
     return self;
   };
 
